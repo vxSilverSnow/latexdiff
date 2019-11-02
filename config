@@ -1,0 +1,12 @@
+DIFFHASH=6b416ab9
+
+REMOVETEXROOT=true
+CFONT=false
+BIB=true
+
+STYLE=true
+FADD="\providecommand{\DIFadd}[1]{{\protect\color{blue} #1}}"
+FDEL="\providecommand{\DIFdel}[1]{{\protect\color{red}\sout{#1}}}"
+
+TEX=platex
+DVIPDF=dvipdfmx
