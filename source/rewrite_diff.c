@@ -16,7 +16,7 @@ char *ifile(char *name, const char *target, const char *hash)
     return name;
 }
 
-int rewrite(FILE *fp, const int *line, const char REMOVETEXROOT, const char BIB, const char CFONT, const char STYLE, const char *fadd, const char *fdel)
+int rewrite(FILE *fp, const int *line, const char REMOVETEXROOT, const char BIB, const char CFONT, const char STYLE, const char *fadd, const char *fdel, const char HEAD)
 {
     int i, j = 0;
     char len[2048] = {0};
@@ -33,7 +33,7 @@ int rewrite(FILE *fp, const int *line, const char REMOVETEXROOT, const char BIB,
     }else if(strncmp(len, "\\DIFdelbegin%DIFDELCMD<\\bibliography{bibliography}", 50) == 0 && BIB){
         bflag = 1;
         fprintf(fp, "\\begin{thebibliography}{99}");
-    }else if(strncmp(len, "\\DIFaddend", 10) == 0 && BIB){
+    }else if(strncmp(len, "\\DIFaddend", 10) == 0 && bflag && BIB){
         bflag = 0;
         fprintf(fp, "\\end{thebibliography}");
     }else if(strncmp(len, "\\bibitem", 8) != 0 && bflag && BIB){
@@ -47,6 +47,9 @@ int rewrite(FILE *fp, const int *line, const char REMOVETEXROOT, const char BIB,
         fprintf(fp, fadd);
     }else if(strncmp(len, "\\providecommand{\\DIFdel}", 24) == 0 && CFONT && STYLE){
         fprintf(fp, fdel);
+    }else if(strncmp(len, "\\begin{document}", 16) == 0 && HEAD){
+        fprintf(fp, "%s\n", len);
+        fprintf(fp, "\\vskip-50mm { \\large \\rightline{ {\\color{red}赤字は削除個所}，{\\color{blue}青字は追記個所}を示しております} }");
     }else{
         for(i = 0; line[i] != 0; i++){
             fputc(line[i], fp);
@@ -68,6 +71,7 @@ int main(int argc, char *argv[])
     char STYLE = 0;
     const char *FADD = argv[7];
     const char *FDEL = argv[8];
+    char HEAD = 0;
 
     int ch, i;
     char name[256] = {0};
@@ -86,6 +90,9 @@ int main(int argc, char *argv[])
     if(strcmp(argv[6], "True") == 0 || strcmp(argv[6], "true") == 0 || strcmp(argv[6], "TRUE") == 0){
         STYLE = 1;
     }
+    if(strcmp(argv[9], "True") == 0 || strcmp(argv[9], "true") == 0 || strcmp(argv[9], "TRUE") == 0){
+        HEAD = 1;
+    }
 
     fpi = fopen(ifile(name, TARGET, DIFFHASH), "r");
     fpo = fopen("temp.tex", "w");
@@ -103,7 +110,7 @@ int main(int argc, char *argv[])
             i++;
         }else{
             len[i] = 0;
-            rewrite(fpo, len, REMOVETEXROOT, BIB, CFONT, STYLE, FADD, FDEL);
+            rewrite(fpo, len, REMOVETEXROOT, BIB, CFONT, STYLE, FADD, FDEL, HEAD);
             i = 0;
         }
     }

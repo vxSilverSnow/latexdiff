@@ -7,7 +7,7 @@ if "%CFONT%"=="true" (
     latexdiff-vc --git --flatten -r %DIFFHASH% %~nx1
 )
 
-call "%~dp0rewrite_diff.exe" %~n1 %DIFFHASH% %REMOVETEXROOT% %BIB% %CFONT% %STYLE% %FADD% %FDEL%
+call "%~dp0rewrite_diff.exe" %~n1 %DIFFHASH% %REMOVETEXROOT% %BIB% %CFONT% %STYLE% %FADD% %FDEL% %HEAD%
 
 del %~n1-diff%DIFFHASH%.tex
 

@@ -8,5 +8,7 @@ STYLE=true
 FADD="\providecommand{\DIFadd}[1]{{\protect\color{blue} #1}}"
 FDEL="\providecommand{\DIFdel}[1]{{\protect\color{red}\sout{#1}}}"
 
+HEAD=false
+
 TEX=platex
 DVIPDF=dvipdfmx
