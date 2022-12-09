@@ -7,7 +7,7 @@ if "%CFONT%"=="true" (
     latexdiff-vc --git --flatten -r %DIFFHASH% %~nx1
 )
 
-call "%~dp0rewrite_diff.exe" %~n1 %DIFFHASH% %REMOVETEXROOT% %BIB% %CFONT% %STYLE% %FADD% %FDEL% %HEAD%
+call "%~dp0bin/rewrite_diff.exe" %~n1 %DIFFHASH% %REMOVETEXROOT% %BIB% %CFONT% %STYLE% %FADD% %FDEL% %HEAD%
 
 del %~n1-diff%DIFFHASH%.tex
 
@@ -25,7 +25,7 @@ del temp*
 pause
 
 :loadconfig
-for /f "usebackq delims== tokens=1,2" %%i in ("%~dp0config") do (
+for /f "usebackq delims== tokens=1,2" %%i in ("%~dp0config/config") do (
     set KEY=%%i
     if not "!KEY:~0,1!"=="#" (
         set %%i=%%j
