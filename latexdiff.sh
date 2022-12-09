@@ -1,10 +1,10 @@
-#!/bin/zsh -x
+#!/bin/zsh
 
 file=${1##*/}
 dir=${1%/*}
 name=${file%.*}
 
-source "${0%/*}/../config/config"
+source "${0%/*}/config/config"
 cd "${dir}"
 if [ "${CFONT}" = "true" ]
 then
@@ -13,7 +13,7 @@ else
     latexdiff-vc --git --flatten -r ${DIFFHASH} ${file}
 fi
 
-"${0%/*}/rewrite_diff.out" ${name} ${DIFFHASH} ${REMOVETEXROOT} ${BIB} ${CFONT} ${STYLE} ${FADD} ${FDEL} ${HEAD}
+"${0%/*}/bin/rewrite_diff.out" ${name} ${DIFFHASH} ${REMOVETEXROOT} ${BIB} ${CFONT} ${STYLE} ${FADD} ${FDEL} ${HEAD}
 
 rm ${name}-diff${DIFFHASH}.tex
 
